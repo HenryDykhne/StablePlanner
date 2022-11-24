@@ -36,7 +36,7 @@ def evaluateModel(model, env):
                 oldActionList = actionList
     return costWeighedReward/NUM_EPISODES, totalCost/NUM_EPISODES, totalTimesteps
 
-TOTAL_TIMESTEPS = 400000
+TOTAL_TIMESTEPS = 600000
 TIMESTEPS_BETWEEN_SAVES = 20000
 INTERVALS = TOTAL_TIMESTEPS / TIMESTEPS_BETWEEN_SAVES
 TIME_LIMIT = 500
@@ -44,12 +44,12 @@ TIME_LIMIT = 500
 ORIGINAL = False
 ENV = "LunarLander"
 PUNISH = True
-STEPS = 3
-RL_ALG = "PPO"
-RUN_NAME = ENV + '/' + ('punish/' if PUNISH else 'noPunish/') + str(STEPS) + 'steps'
+STEPS = 5
+RL_ALG = "TRPO"
+RUN_NAME = ENV + '/' + ('punish/' if PUNISH else 'noPunish/') + str(STEPS) + 'steps/' + RL_ALG
 
 if ORIGINAL:
-    RUN_NAME = ENV + '/original/'  + str(STEPS) + 'steps'
+    RUN_NAME = ENV + '/original/'  + str(STEPS) + 'steps/' + RL_ALG
 
 LOG_DIRECTORY = "logs"
 MODEL_DIRECTORY = "models/" + RUN_NAME
@@ -81,7 +81,6 @@ for runNum in range(5):
         model = TRPO('MlpPolicy' if ORIGINAL else "MultiInputPolicy", env, verbose=1, tensorboard_log=LOG_DIRECTORY)
 
     iters = 0
-    
     rewards.append([])
     costs.append([])
     temp = "Run" + str(runNum)
