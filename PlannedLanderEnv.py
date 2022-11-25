@@ -319,6 +319,7 @@ class PlannedLunarLander(gym.Env, EzPickle):
         self.world.DestroyBody(self.legs[1])
 
     def reset(self, seed: Optional[int] = None):
+        self.oldActionList = None
         self.np_random, seed = seeding.np_random(seed)
         self._destroy()
         self.world.contactListener_keepref = ContactDetector(self)
@@ -611,7 +612,6 @@ class PlannedLunarLander(gym.Env, EzPickle):
 
         if self.render_mode == "human":
             self.render()
-        #actionsAddedToState = np.concatenate((np.array(self.actionList, dtype=np.float32), np.array(state, dtype=np.float32)), axis=None)
         return {'oldActions': actionList, 'normalObs': np.array(state, dtype=np.float32)}, reward, terminated, {}
 
     def render(self, mode="human", **kwargs):
