@@ -181,6 +181,8 @@ class PlannedCarRacing(gym.Env, EzPickle):
         lap_complete_percent: float = 0.95,
         domain_randomize: bool = False,
         continuous: bool = False,
+        steps: int = 3, 
+        punish: bool = False,
     ):
         EzPickle.__init__(
             self,
@@ -189,7 +191,6 @@ class PlannedCarRacing(gym.Env, EzPickle):
             lap_complete_percent,
             domain_randomize,
             continuous,
-            steps: int = 3, punish: bool = False
         )
         self.steps = steps
         self.punish = punish
@@ -225,10 +226,10 @@ class PlannedCarRacing(gym.Env, EzPickle):
                 np.array([+1, +1, +1]).astype(np.float32),
             )  # steer, gas, brake
         else:
-            self.action_space = spaces.MultiDiscrete([3] * self.steps)
+            self.action_space = spaces.MultiDiscrete([5] * self.steps)
             # do nothing, left, right, gas, brake
 
-        self.observation_space = spaces.Dict({'oldActions': spaces.MultiDiscrete([5] * self.steps), spaces.Box(low=0, high=255, shape=(STATE_H, STATE_W, 3), dtype=np.uint8)})
+        self.observation_space = spaces.Dict({'oldActions': spaces.MultiDiscrete([5] * self.steps), 'normalObs': spaces.Box(low=0, high=255, shape=(STATE_H, STATE_W, 3), dtype=np.uint8)})
 
         self.render_mode = render_mode
 
@@ -515,11 +516,11 @@ class PlannedCarRacing(gym.Env, EzPickle):
                 self.car.gas(action[1])
                 self.car.brake(action[2])
             else:
-                if not self.action_space.contains(action):
-                    raise InvalidAction(
-                        f"you passed the invalid action `{action}`. "
-                        f"The supported action_space is `{self.action_space}`"
-                    )
+                # if not self.action_space.contains(action):
+                #     raise InvalidAction(
+                #         f"you passed the invalid action `{action}`. "
+                #         f"The supported action_space is `{self.action_space}`"
+                #     )
                 self.car.steer(-0.6 * (action == 1) + 0.6 * (action == 2))
                 self.car.gas(0.2 * (action == 3))
                 self.car.brake(0.8 * (action == 4))
@@ -572,6 +573,75 @@ class PlannedCarRacing(gym.Env, EzPickle):
         else:
             return self._render(self.render_mode)
 
+    def draw(self, surface, zoom, translation, angle, draw_particles=True):
+        import pygame.draw
+
+        if draw_particles:
+            for p in self.particles:
+                poly = [pygame.math.Vector2(c).rotate_rad(angle) for c in p.poly]
+                poly = [
+                    (
+                        coords[0] * zoom + translation[0],
+                        coords[1] * zoom + translation[1],
+                    )
+                    for coords in poly
+                ]
+                pygame.draw.lines(
+                    surface, color=p.color, points=poly, width=2, closed=False
+                )
+
+        for obj in self.drawlist:
+            for f in obj.fixtures:
+                trans = f.body.transform
+                path = [trans * v for v in f.shape.vertices]
+                path = [(coords[0], coords[1]) for coords in path]
+                path = [pygame.math.Vector2(c).rotate_rad(angle) for c in path]
+                path = [
+                    (
+                        coords[0] * zoom + translation[0],
+                        coords[1] * zoom + translation[1],
+                    )
+                    for coords in path
+                ]
+                color = [int(c * 255) for c in obj.color]
+
+                pygame.draw.polygon(surface, color=color, points=path)
+
+                if "phase" not in obj.__dict__:
+                    continue
+                a1 = obj.phase
+                a2 = obj.phase + 1.2  # radians
+                s1 = math.sin(a1)
+                s2 = math.sin(a2)
+                c1 = math.cos(a1)
+                c2 = math.cos(a2)
+                if s1 > 0 and s2 > 0:
+                    continue
+                if s1 > 0:
+                    c1 = np.sign(c1)
+                if s2 > 0:
+                    c2 = np.sign(c2)
+                white_poly = [
+                    (-WHEEL_W * SIZE, +WHEEL_R * c1 * SIZE),
+                    (+WHEEL_W * SIZE, +WHEEL_R * c1 * SIZE),
+                    (+WHEEL_W * SIZE, +WHEEL_R * c2 * SIZE),
+                    (-WHEEL_W * SIZE, +WHEEL_R * c2 * SIZE),
+                ]
+                white_poly = [trans * v for v in white_poly]
+
+                white_poly = [(coords[0], coords[1]) for coords in white_poly]
+                white_poly = [
+                    pygame.math.Vector2(c).rotate_rad(angle) for c in white_poly
+                ]
+                white_poly = [
+                    (
+                        coords[0] * zoom + translation[0],
+                        coords[1] * zoom + translation[1],
+                    )
+                    for coords in white_poly
+                ]
+                pygame.draw.polygon(surface, color=WHEEL_WHITE, points=white_poly)
+
     def _render(self, mode: str):
         assert mode in self.metadata["render_modes"]
 
@@ -599,7 +669,7 @@ class PlannedCarRacing(gym.Env, EzPickle):
         trans = (WINDOW_W / 2 + trans[0], WINDOW_H / 4 + trans[1])
 
         self._render_road(zoom, trans, angle)
-        self.car.draw(
+        self.draw(
             self.surf,
             zoom,
             trans,

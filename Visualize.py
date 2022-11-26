@@ -3,28 +3,64 @@ import os
 import numpy as np
 import pickle
 from stable_baselines3 import A2C, PPO
-from sb3_contrib import RecurrentPPO
-from PlannedLanderPunishEnv import PlannedLunarLanderPunish, TimeLimit
-from PlannedLanderPunishEnv5Steps import PlannedLunarLanderPunish5Steps
-from PlannedLanderNoPunishEnv import PlannedLunarLanderNoPunish
-from PlannedLanderNoPunishEnv5Steps import PlannedLunarLanderNoPunish5Steps
-from PlannedLanderNoPunishEnvSingle import PlannedLunarLanderNoPunishSingle
-from PlannedLanderNoPunishEnvSingleRegularObs import PlannedLunarLanderNoPunishSingleRegularObs
+from sb3_contrib import RecurrentPPO, TRPO
+from PlannedLanderEnv import PlannedLunarLander, TimeLimit
+from LunarLander import LunarLander
+from PlannedMountainCarEnv import PlannedMountainCar
+from PlannedCarRacingEnv import PlannedCarRacing
+from PlannedCartPoleEnv import PlannedCartPole
 from stable_baselines3.common.vec_env.dummy_vec_env import DummyVecEnv
 from stable_baselines3.common.monitor import Monitor
 
-env = Monitor(TimeLimit(PlannedLunarLanderPunish(), 500))
-#env_function = lambda: Monitor(TimeLimit(PlannedLunarLanderNoPunish(), 500))
-#env = Monitor(TimeLimit(PlannedLunarLanderPunish5Steps(), 500))
+ORIGINAL = False
+ENV = "CartPole"
+PUNISH = True
+STEPS = 5
+RL_ALG = "PPO"
+RUN_NO = 0
+RUN_NAME = ENV + '/' + ('punish/' if PUNISH else 'noPunish/') + str(STEPS) + 'steps/' + RL_ALG + '/Run' + str(RUN_NO)
 
-#env = gym.make('LunarLander-v2')
+if ORIGINAL:
+    RUN_NAME = ENV + '/original/' + RL_ALG + '/Run' + str(RUN_NO) 
+
+MODEL_DIRECTORY = "models/" + RUN_NAME
+
+if ENV == "LunarLander" and ORIGINAL:
+    env = TimeLimit(gym.make('LunarLander-v2'), 500) #solving = score > 200
+    costMultiplier = 0
+elif ENV == "LunarLander" and not ORIGINAL:
+    env = Monitor(TimeLimit(PlannedLunarLander(steps = STEPS, punish = PUNISH), 500))
+    costMultiplier = 2
+elif ENV == "LunarLanderStochastic" and ORIGINAL:
+    env = Monitor(TimeLimit(LunarLander(enable_wind=True), 500))
+    costMultiplier = 0
+elif ENV == "LunarLanderStochastic" and not ORIGINAL:
+    env = Monitor(TimeLimit(PlannedLunarLander(steps = STEPS, punish = PUNISH, enable_wind=True), 500))
+    costMultiplier = 2
+elif ENV == "MountainCar" and ORIGINAL: #unsolvable by stock PPO
+    env = TimeLimit(gym.make('MountainCar-v0'), 200)
+    costMultiplier = 0
+elif ENV == "MountainCar" and not ORIGINAL:
+    env = Monitor(TimeLimit(PlannedMountainCar(steps = STEPS, punish = PUNISH), 200))
+    costMultiplier = 1
+elif ENV == "CarRacing" and ORIGINAL:
+    env = TimeLimit(gym.make('CarRacing-v0', continuous = False), 2000)#solving = score > 900 #under construction
+    costMultiplier = 0
+elif ENV == "CarRacing" and not ORIGINAL:
+    env = Monitor(TimeLimit(PlannedCarRacing(steps = STEPS, punish = PUNISH), 2000))
+    costMultiplier = 2
+elif ENV == "CartPole" and ORIGINAL:
+    env = TimeLimit(gym.make('CartPole-v1', continuous = False), 200)#solving = score > 199
+    costMultiplier = 0
+elif ENV == "CartPole" and not ORIGINAL:
+    env = Monitor(TimeLimit(PlannedCartPole(steps = STEPS, punish = PUNISH), 200))
+    costMultiplier = 1
 env.reset()
 
-MODEL_DIRECTORY = "models/PPO_Punish_3Steps_5"
-model_path = f"{MODEL_DIRECTORY}/350000.zip"
+model_path = f"{MODEL_DIRECTORY}/180000.zip"
 loadedModel = PPO.load(model_path, env=env)
 
-NUM_EPISODES = 100
+NUM_EPISODES = 80
 totalCost = 0
 totalTimesteps = 0
 for ep in range(NUM_EPISODES):
