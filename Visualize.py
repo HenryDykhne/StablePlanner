@@ -13,11 +13,11 @@ from stable_baselines3.common.vec_env.dummy_vec_env import DummyVecEnv
 from stable_baselines3.common.monitor import Monitor
 
 ORIGINAL = False
-ENV = "CartPole"
+ENV = "LunarLander"
 PUNISH = True
-STEPS = 5
+STEPS = 3
 RL_ALG = "PPO"
-RUN_NO = 0
+RUN_NO = 3
 RUN_NAME = ENV + '/' + ('punish/' if PUNISH else 'noPunish/') + str(STEPS) + 'steps/' + RL_ALG + '/Run' + str(RUN_NO)
 
 if ORIGINAL:
@@ -57,12 +57,13 @@ elif ENV == "CartPole" and not ORIGINAL:
     costMultiplier = 1
 env.reset()
 
-model_path = f"{MODEL_DIRECTORY}/180000.zip"
+model_path = f"{MODEL_DIRECTORY}/600000"
 loadedModel = PPO.load(model_path, env=env)
 
 NUM_EPISODES = 80
 totalCost = 0
 totalTimesteps = 0
+totalReward = 0
 for ep in range(NUM_EPISODES):
     print("Episode Number: " + str(ep))
     oldActionList = None
@@ -74,6 +75,7 @@ for ep in range(NUM_EPISODES):
         action, _states = loadedModel.predict(obs)
         #print(action)
         obs, rewards, done, info = env.step(action)
+        totalReward += rewards
         ##calculating cost
         actionList = action
         action = action[0]
@@ -82,8 +84,9 @@ for ep in range(NUM_EPISODES):
                 #print(actionList)
                 #print(self.oldActionList[1:])
                 if actionList[i] != oldActionList[1:][i]:
-                    totalCost += 1.5 * (len(oldActionList) - i)/len(oldActionList)
+                    totalCost += costMultiplier * (len(oldActionList) - i)/len(oldActionList)
                     break
         oldActionList = actionList
+print("AverageRewardPerEpisode:" + str(totalReward/NUM_EPISODES))
 print("AverageCostPerEpisode:" + str(totalCost/NUM_EPISODES))
 print("AverageCostPerTimestep:" + str(totalCost/totalTimesteps))

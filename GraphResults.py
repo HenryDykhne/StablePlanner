@@ -3,11 +3,14 @@ import numpy as np
 import pickle
 import matplotlib.pyplot as plt
 
-def plotArrays(vars, color, label, maxY = np.inf, minY = -np.inf):
+def plotArrays(vars, color, label, maxY = np.inf, minY = -np.inf, numMeasurements = None):
     mean = np.mean(vars, axis=0)
     std = np.std(vars, axis=0)
-    plt.plot(range(len(mean)), mean, color=color, label=label)
-    plt.fill_between(range(len(mean)), np.maximum(mean-std, minY), np.minimum(mean+std,maxY), color=color, alpha=0.3)
+    if numMeasurements != None:
+        mean = mean[0:numMeasurements+1]
+        std = std[0:numMeasurements+1]
+    plt.plot(np.array(range(len(mean)))*20000, mean, color=color, label=label)
+    plt.fill_between(np.array(range(len(mean)))*20000, np.maximum(mean-std, minY), np.minimum(mean+std,maxY), color=color, alpha=0.3)
 
 def getData(ORIGINAL = False, ENV = None, PUNISH = None, STEPS = None, RL_ALG = None):
     RUN_NAME = ENV + '/' + ('punish/' if PUNISH else 'noPunish/') + str(STEPS) + 'steps/' + RL_ALG
@@ -18,7 +21,7 @@ def getData(ORIGINAL = False, ENV = None, PUNISH = None, STEPS = None, RL_ALG = 
     costs = pickle.load(open(f"{DATA_DIRECTORY}/costs.p", "rb" ))
     return rewards, costs, RUN_NAME
 
-colors = ['green','purple','blue', 'k', 'orange', 'red', 'pink']
+colors = ['green','purple','blue', 'k', 'orange', 'red', 'c', 'y']
 
 graphPath = 'images/LunarLander/punish/3steps'##These were run for 400000 steps 20000 length intervals
 if not os.path.exists(graphPath):
@@ -225,15 +228,17 @@ plotArrays(rewards, colors[1], "PPO_4Steps_Punished")
 rewards, costs, runName = getData(ENV = "LunarLander", PUNISH = True, STEPS = 5, RL_ALG = "PPO")
 plotArrays(rewards, colors[2], "PPO_5Steps_Punished")
 
-# rewards, costs, runName = getData(ENV = "LunarLander", PUNISH = False, STEPS = 3, RL_ALG = "PPO")
-# plotArrays(rewards, colors[4], "PPO_3Steps_NotPunished")
-# rewards, costs, runName = getData(ENV = "LunarLander", PUNISH = False, STEPS = 4, RL_ALG = "PPO")
-# plotArrays(rewards, colors[5], "PPO_4Steps_NotPunished")
-# rewards, costs, runName = getData(ENV = "LunarLander", PUNISH = False, STEPS = 5, RL_ALG = "PPO")
-# plotArrays(rewards, colors[6], "PPO_5Steps_NotPunished")
+rewards, costs, runName = getData(ENV = "LunarLander", PUNISH = False, STEPS = 1, RL_ALG = "PPO")
+plotArrays(rewards, colors[7], "PPO_1Steps_NotPunished")
+rewards, costs, runName = getData(ENV = "LunarLander", PUNISH = False, STEPS = 3, RL_ALG = "PPO")
+plotArrays(rewards, colors[4], "PPO_3Steps_NotPunished")
+rewards, costs, runName = getData(ENV = "LunarLander", PUNISH = False, STEPS = 4, RL_ALG = "PPO")
+plotArrays(rewards, colors[5], "PPO_4Steps_NotPunished")
+rewards, costs, runName = getData(ENV = "LunarLander", PUNISH = False, STEPS = 5, RL_ALG = "PPO")
+plotArrays(rewards, colors[6], "PPO_5Steps_NotPunished")
 
-# rewards, costs, runName = getData(ORIGINAL = True, ENV = "LunarLander", RL_ALG = "PPO")
-# plotArrays(rewards, colors[3], "PPO_Original")
+rewards, costs, runName = getData(ORIGINAL = True, ENV = "LunarLander", RL_ALG = "PPO")
+plotArrays(rewards, colors[3], "PPO_Original")
 
 plt.legend(loc='best')
 plt.savefig(graphPath+"/costWeighedReward.png")
@@ -248,15 +253,18 @@ plotArrays(np.asarray(rewards) - np.asarray(costs), colors[1], "PPO_4Steps_Punis
 rewards, costs, runName = getData(ENV = "LunarLander", PUNISH = True, STEPS = 5, RL_ALG = "PPO")
 plotArrays(np.asarray(rewards) - np.asarray(costs), colors[2], "PPO_5Steps_Punished")
 
-# rewards, costs, runName = getData(ENV = "LunarLander", PUNISH = False, STEPS = 3, RL_ALG = "PPO")
-# plotArrays(np.asarray(rewards) - np.asarray(costs), colors[4], "PPO_3Steps_NotPunished")
-# rewards, costs, runName = getData(ENV = "LunarLander", PUNISH = False, STEPS = 4, RL_ALG = "PPO")
-# plotArrays(np.asarray(rewards) - np.asarray(costs), colors[5], "PPO_4Steps_NotPunished")
-# rewards, costs, runName = getData(ENV = "LunarLander", PUNISH = False, STEPS = 5, RL_ALG = "PPO")
-# plotArrays(np.asarray(rewards) - np.asarray(costs), colors[6], "PPO_5Steps_NotPunished")
 
-# rewards, costs, runName = getData(ORIGINAL = True, ENV = "LunarLander", RL_ALG = "PPO")
-# plotArrays(np.asarray(rewards) - np.asarray(costs), colors[3], "PPO_Original")
+rewards, costs, runName = getData(ENV = "LunarLander", PUNISH = False, STEPS = 1, RL_ALG = "PPO")
+plotArrays(np.asarray(rewards), colors[7], "PPO_1Steps_NotPunished")
+rewards, costs, runName = getData(ENV = "LunarLander", PUNISH = False, STEPS = 3, RL_ALG = "PPO")#no need for cost correction here
+plotArrays(np.asarray(rewards), colors[4], "PPO_3Steps_NotPunished")
+rewards, costs, runName = getData(ENV = "LunarLander", PUNISH = False, STEPS = 4, RL_ALG = "PPO")
+plotArrays(np.asarray(rewards), colors[5], "PPO_4Steps_NotPunished")
+rewards, costs, runName = getData(ENV = "LunarLander", PUNISH = False, STEPS = 5, RL_ALG = "PPO")
+plotArrays(np.asarray(rewards), colors[6], "PPO_5Steps_NotPunished")
+
+rewards, costs, runName = getData(ORIGINAL = True, ENV = "LunarLander", RL_ALG = "PPO")
+plotArrays(np.asarray(rewards), colors[3], "PPO_Original")
 
 plt.legend(loc='best')
 plt.savefig(graphPath+"/costCorrectedReward.png")

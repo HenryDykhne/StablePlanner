@@ -47,8 +47,8 @@ INTERVALS = TOTAL_TIMESTEPS / TIMESTEPS_BETWEEN_SAVES
 
 ORIGINAL = False
 ENV = "LunarLander"
-PUNISH = False
-STEPS = 5
+PUNISH = True
+STEPS = 3
 RL_ALG = "PPO"
 RUN_NAME = ENV + '/' + ('punish/' if PUNISH else 'noPunish/') + str(STEPS) + 'steps/' + RL_ALG
 
