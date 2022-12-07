@@ -32,10 +32,9 @@ class PlannedReacher(MujocoEnv, utils.EzPickle):
                 for k in range(self.singleActionSize):
                     distance += (actionList[i * self.singleActionSize + k] - self.oldActionList[self.singleActionSize:][i*self.singleActionSize + k]) ** 2
                 distance = distance ** (1/2)
-                reward -= 0.3 * distance * (len(self.oldActionList) - (i * self.singleActionSize))/len(self.oldActionList)
+                reward -= 1 * distance * (len(self.oldActionList) - (i * self.singleActionSize))/len(self.oldActionList)
 
         self.oldActionList = actionList
-
         ob = np.concatenate((ob, self.oldActionList))
         return ob, reward, done, dict(reward_dist=reward_dist, reward_ctrl=reward_ctrl)
 

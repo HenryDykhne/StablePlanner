@@ -5,12 +5,12 @@ import pickle
 from stable_baselines3 import A2C, PPO
 from sb3_contrib import RecurrentPPO, TRPO
 from PlannedLanderEnv import PlannedLunarLander, TimeLimit
-from LunarLander import LunarLander
 from PlannedMountainCarEnv import PlannedMountainCar
 from PlannedCarRacingEnv import PlannedCarRacing
 from PlannedCartPoleEnv import PlannedCartPole
 from PlannedHopperEnv import PlannedHopper
 from PlannedReacherEnv import PlannedReacher
+from PlannedHalfCheetahEnv import PlannedHalfCheetah
 from PlannedInvertedDoublePendulumEnv import PlannedInvertedDoublePendulum
 from stable_baselines3.common.vec_env.dummy_vec_env import DummyVecEnv
 from stable_baselines3.common.monitor import Monitor
@@ -68,11 +68,12 @@ NUM_EPISODES_FOR_EVAL = 80
 
 mujoco = False
 singleActionSize = 3
+boxSpace = False
 
 ORIGINAL = False
-ENV = "InvertedDoublePendulum"
+ENV = "CartPole"
 PUNISH = False
-STEPS = 3
+STEPS = 5
 RL_ALG = "PPO"
 RUN_NAME = ENV + '/' + ('punish/' if PUNISH else 'noPunish/') + str(STEPS) + 'steps/' + RL_ALG
 
@@ -139,11 +140,11 @@ elif ENV == "Reacher" and ORIGINAL:
     boxSpace = True
     costMultiplier = 0
 elif ENV == "Reacher" and not ORIGINAL:
-    env = Monitor(TimeLimit(PlannedReacher(steps = STEPS, punish = PUNISH), 1000))
+    env = Monitor(TimeLimit(PlannedReacher(steps = STEPS, punish = PUNISH), 50))
     mujoco = True
     singleActionSize = 2
     boxSpace = True
-    costMultiplier = 0.3
+    costMultiplier = 1
 elif ENV == "InvertedDoublePendulum" and ORIGINAL:
     env = gym.make('InvertedDoublePendulum-v2')#solving = not sure.
     boxSpace = True
@@ -154,6 +155,16 @@ elif ENV == "InvertedDoublePendulum" and not ORIGINAL:
     singleActionSize = 1
     boxSpace = True
     costMultiplier = 3
+elif ENV == "HalfCheetah" and ORIGINAL:
+    env = gym.make('HalfCheetah-v3')#solving = not sure.
+    boxSpace = True
+    costMultiplier = 0
+elif ENV == "HalfCheetah" and not ORIGINAL:
+    env = Monitor(TimeLimit(PlannedHalfCheetah(steps = STEPS, punish = PUNISH), 1000))
+    mujoco = True
+    singleActionSize = 6
+    boxSpace = True
+    costMultiplier = 1
 env.reset()
 
 rewards = []

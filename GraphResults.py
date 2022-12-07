@@ -33,35 +33,51 @@ if not os.path.exists(graphPath):
 
 plt.figure()
 rewards, costs, costsPerTimestep, runName = getData(ENV = "LunarLander", PUNISH = True, STEPS = 3, RL_ALG = "PPO")
-plotArrays(rewards, colors[0], "PPO")
+plotArrays(rewards, colors[0], "PPO", numMeasurements = 20)
 rewards, costs, costsPerTimestep, runName = getData(ENV = "LunarLander", PUNISH = True, STEPS = 3, RL_ALG = "A2C")
 plotArrays(rewards, colors[1], "A2C")
 rewards, costs, costsPerTimestep, runName = getData(ENV = "LunarLander", PUNISH = True, STEPS = 3, RL_ALG = "TRPO")
 plotArrays(rewards, colors[2], "TRPO")
+rewards, costs, costsPerTimestep, runName = getData(ORIGINAL = True, ENV = "LunarLander", RL_ALG = "PPO")
+plotArrays(rewards, colors[3], "PPO(UnmodifiedEnv)", numMeasurements = 20)
+rewards, costs, costsPerTimestep, runName = getData(ENV = "LunarLander", PUNISH = False, STEPS = 3, RL_ALG = "PPO")
+plotArrays(rewards, colors[4], "PPO(NoPunish)", minY = 0, numMeasurements = 20)#for comparison, what the rewards
 
 plt.legend(loc='best')
+plt.xlabel("Training Steps")
+plt.ylabel("Average Reward Per Episode")
 plt.savefig(graphPath+"/costWeighedReward.png")
 
 plt.figure()
 rewards, costs, costsPerTimestep, runName = getData(ENV = "LunarLander", PUNISH = True, STEPS = 3, RL_ALG = "PPO")
-plotArrays(np.asarray(rewards) - np.asarray(costs), colors[0], "PPO")
+plotArrays(np.asarray(rewards) - np.asarray(costs), colors[0], "PPO", numMeasurements = 20)
 rewards, costs, costsPerTimestep, runName = getData(ENV = "LunarLander", PUNISH = True, STEPS = 3, RL_ALG = "A2C")
 plotArrays(np.asarray(rewards) - np.asarray(costs), colors[1], "A2C")
 rewards, costs, costsPerTimestep, runName = getData(ENV = "LunarLander", PUNISH = True, STEPS = 3, RL_ALG = "TRPO")
 plotArrays(np.asarray(rewards) - np.asarray(costs), colors[2], "TRPO")
+rewards, costs, costsPerTimestep, runName = getData(ORIGINAL = True, ENV = "LunarLander", RL_ALG = "PPO")
+plotArrays(rewards, colors[3], "PPO(UnmodifiedEnv)", numMeasurements = 20)
+rewards, costs, costsPerTimestep, runName = getData(ENV = "LunarLander", PUNISH = False, STEPS = 3, RL_ALG = "PPO")
+plotArrays(rewards, colors[4], "PPO(NoPunish)", minY = 0, numMeasurements = 20)#for comparison, what the rewards
 
 plt.legend(loc='best')
+plt.xlabel("Training Steps")
+plt.ylabel("Average Cost Corrected Reward Per Episode")
 plt.savefig(graphPath+"/costCorrectedReward.png")
 
 plt.figure()
 rewards, costs, costsPerTimestep, runName = getData(ENV = "LunarLander", PUNISH = True, STEPS = 3, RL_ALG = "PPO")
-plotArrays(-np.asarray(costs), colors[0], "PPO", minY = 0)
+plotArrays(-np.asarray(costs), colors[0], "PPO", minY = 0, numMeasurements = 20)
 rewards, costs, costsPerTimestep, runName = getData(ENV = "LunarLander", PUNISH = True, STEPS = 3, RL_ALG = "A2C")
 plotArrays(-np.asarray(costs), colors[1], "A2C", minY = 0)
 rewards, costs, costsPerTimestep, runName = getData(ENV = "LunarLander", PUNISH = True, STEPS = 3, RL_ALG = "TRPO")
 plotArrays(-np.asarray(costs), colors[2], "TRPO", minY = 0)
+rewards, costs, costsPerTimestep, runName = getData(ENV = "LunarLander", PUNISH = False, STEPS = 3, RL_ALG = "PPO")
+plotArrays(-np.asarray(costs), colors[4], "PPO(NoPunish)", minY = 0, numMeasurements = 20)#for comparison, what the costs would have been if it is not taught to take them into account
 
 plt.legend(loc='best')
+plt.xlabel("Training Steps")
+plt.ylabel("Average Cost of Replanning Per Episode")
 plt.savefig(graphPath+"/cost.png")
 
 #################
@@ -72,33 +88,52 @@ if not os.path.exists(graphPath):
 
 plt.figure()
 rewards, costs, costsPerTimestep, runName = getData(ENV = "LunarLander", PUNISH = True, STEPS = 5, RL_ALG = "PPO")
-plotArrays(rewards, colors[0], "PPO")
+plotArrays(rewards, colors[0], "PPO", numMeasurements = 30)
 rewards, costs, costsPerTimestep, runName = getData(ENV = "LunarLander", PUNISH = True, STEPS = 5, RL_ALG = "A2C")
 plotArrays(rewards, colors[1], "A2C")
 rewards, costs, costsPerTimestep, runName = getData(ENV = "LunarLander", PUNISH = True, STEPS = 5, RL_ALG = "TRPO")
 plotArrays(rewards, colors[2], "TRPO")
+rewards, costs, costsPerTimestep, runName = getData(ORIGINAL = True, ENV = "LunarLander", RL_ALG = "PPO")
+plotArrays(rewards, colors[3], "PPO(UnmodifiedEnv)")
+rewards, costs, costsPerTimestep, runName = getData(ENV = "LunarLander", PUNISH = False, STEPS = 5, RL_ALG = "PPO")
+plotArrays(rewards, colors[6], "PPO(NoPunish)", minY = 0, numMeasurements = 30)#for comparison, what the rewards
 
 plt.legend(loc='best')
+plt.xlabel("Training Steps")
+plt.ylabel("Average Reward Per Episode")
 plt.savefig(graphPath+"/costWeighedReward.png")
 
 plt.figure()
 rewards, costs, costsPerTimestep, runName = getData(ENV = "LunarLander", PUNISH = True, STEPS = 5, RL_ALG = "PPO")
-plotArrays(np.asarray(rewards) - np.asarray(costs), colors[0], "PPO")
+plotArrays(np.asarray(rewards) - np.asarray(costs), colors[0], "PPO", numMeasurements = 30)
 rewards, costs, costsPerTimestep, runName = getData(ENV = "LunarLander", PUNISH = True, STEPS = 5, RL_ALG = "A2C")
 plotArrays(np.asarray(rewards) - np.asarray(costs), colors[1], "A2C")
 rewards, costs, costsPerTimestep, runName = getData(ENV = "LunarLander", PUNISH = True, STEPS = 5, RL_ALG = "TRPO")
 plotArrays(np.asarray(rewards) - np.asarray(costs), colors[2], "TRPO")
+rewards, costs, costsPerTimestep, runName = getData(ORIGINAL = True, ENV = "LunarLander", RL_ALG = "PPO")
+plotArrays(rewards, colors[3], "PPO(UnmodifiedEnv)")
+rewards, costs, costsPerTimestep, runName = getData(ENV = "LunarLander", PUNISH = False, STEPS = 5, RL_ALG = "PPO")
+plotArrays(rewards, colors[6], "PPO(NoPunish)", minY = 0, numMeasurements = 30)#for comparison, what the rewards
 
 plt.legend(loc='best')
+plt.xlabel("Training Steps")
+plt.ylabel("Average Cost Corrected Reward Per Episode")
 plt.savefig(graphPath+"/costCorrectedReward.png")
 
 plt.figure()
 rewards, costs, costsPerTimestep, runName = getData(ENV = "LunarLander", PUNISH = True, STEPS = 5, RL_ALG = "PPO")
-plotArrays(-np.asarray(costs), colors[0], "PPO", minY = 0)
+plotArrays(-np.asarray(costs), colors[0], "PPO", minY = 0, numMeasurements = 30)
 rewards, costs, costsPerTimestep, runName = getData(ENV = "LunarLander", PUNISH = True, STEPS = 5, RL_ALG = "A2C")
 plotArrays(-np.asarray(costs), colors[1], "A2C", minY = 0)
 rewards, costs, costsPerTimestep, runName = getData(ENV = "LunarLander", PUNISH = True, STEPS = 5, RL_ALG = "TRPO")
 plotArrays(-np.asarray(costs), colors[2], "TRPO", minY = 0)
+rewards, costs, costsPerTimestep, runName = getData(ENV = "LunarLander", PUNISH = False, STEPS = 5, RL_ALG = "PPO")
+plotArrays(-np.asarray(costs), colors[6], "PPO(NoPunish)", minY = 0, numMeasurements = 30)#for comparison, what the costs would have been if it is not taught to take them into account
+
+plt.legend(loc='best')
+plt.xlabel("Training Steps")
+plt.ylabel("Average Cost of Replanning Per Episode")
+plt.savefig(graphPath+"/cost.png")
 
 #################
 
@@ -114,9 +149,13 @@ plotArrays(rewards, colors[1], "A2C")
 rewards, costs, costsPerTimestep, runName = getData(ENV = "LunarLanderStochastic", PUNISH = True, STEPS = 3, RL_ALG = "TRPO")
 plotArrays(rewards, colors[2], "TRPO")
 rewards, costs, costsPerTimestep, runName = getData(ORIGINAL = True, ENV = "LunarLanderStochastic", RL_ALG = "PPO")
-plotArrays(rewards, colors[3], "Baseline(PPO)")
+plotArrays(rewards, colors[3], "PPO(UnmodifiedEnv)")
+rewards, costs, costsPerTimestep, runName = getData(ENV = "LunarLanderStochastic", PUNISH = False, STEPS = 3, RL_ALG = "PPO")
+plotArrays(rewards, colors[4], "PPO(NoPunish)", interval = 60000)#for comparison, what the rewards
 
 plt.legend(loc='best')
+plt.xlabel("Training Steps")
+plt.ylabel("Average Reward Per Episode")
 plt.savefig(graphPath+"/costWeighedReward.png")
 
 plt.figure()
@@ -127,9 +166,13 @@ plotArrays(np.asarray(rewards) - np.asarray(costs), colors[1], "A2C")
 rewards, costs, costsPerTimestep, runName = getData(ENV = "LunarLanderStochastic", PUNISH = True, STEPS = 3, RL_ALG = "TRPO")
 plotArrays(np.asarray(rewards) - np.asarray(costs), colors[2], "TRPO")
 rewards, costs, costsPerTimestep, runName = getData(ORIGINAL = True, ENV = "LunarLanderStochastic", RL_ALG = "PPO")
-plotArrays(np.asarray(rewards) - np.asarray(costs), colors[3], "Baseline(PPO)")
+plotArrays(np.asarray(rewards) - np.asarray(costs), colors[3], "PPO(UnmodifiedEnv)")
+rewards, costs, costsPerTimestep, runName = getData(ENV = "LunarLanderStochastic", PUNISH = False, STEPS = 3, RL_ALG = "PPO")
+plotArrays(rewards, colors[4], "PPO(NoPunish)", interval = 60000)#for comparison, what the rewards
 
 plt.legend(loc='best')
+plt.xlabel("Training Steps")
+plt.ylabel("Average Cost Corrected Reward Per Episode")
 plt.savefig(graphPath+"/costCorrectedReward.png")
 
 plt.figure()
@@ -139,9 +182,13 @@ rewards, costs, costsPerTimestep, runName = getData(ENV = "LunarLanderStochastic
 plotArrays(-np.asarray(costs), colors[1], "A2C", minY = 0)
 rewards, costs, costsPerTimestep, runName = getData(ENV = "LunarLanderStochastic", PUNISH = True, STEPS = 3, RL_ALG = "TRPO")
 plotArrays(-np.asarray(costs), colors[2], "TRPO", minY = 0)
+rewards, costs, costsPerTimestep, runName = getData(ENV = "LunarLanderStochastic", PUNISH = False, STEPS = 3, RL_ALG = "PPO")
+plotArrays(-np.asarray(costs), colors[4], "PPO(NoPunish)", minY = 0, interval = 60000)#for comparison, what the costs would have been if it is not taught to take them into account
 
 
 plt.legend(loc='best')
+plt.xlabel("Training Steps")
+plt.ylabel("Average Cost of Replanning Per Episode")
 plt.savefig(graphPath+"/cost.png")
 
 #################
@@ -157,8 +204,14 @@ rewards, costs, costsPerTimestep, runName = getData(ENV = "CartPole", PUNISH = T
 plotArrays(rewards, colors[1], "A2C")
 rewards, costs, costsPerTimestep, runName = getData(ENV = "CartPole", PUNISH = True, STEPS = 3, RL_ALG = "TRPO")
 plotArrays(rewards, colors[2], "TRPO")
+rewards, costs, costsPerTimestep, runName = getData(ORIGINAL = True, ENV = "CartPole", RL_ALG = "PPO")
+plotArrays(rewards, colors[3], "PPO(UnmodifiedEnv)")
+rewards, costs, costsPerTimestep, runName = getData(ENV = "CartPole", PUNISH = False, STEPS = 3, RL_ALG = "PPO")
+plotArrays(rewards, colors[4], "PPO(NoPunish)", minY = 0, numMeasurements = 5)#for comparison, what the rewards
 
 plt.legend(loc='best')
+plt.xlabel("Training Steps")
+plt.ylabel("Average Reward Per Episode")
 plt.savefig(graphPath+"/costWeighedReward.png")
 
 plt.figure()
@@ -168,8 +221,14 @@ rewards, costs, costsPerTimestep, runName = getData(ENV = "CartPole", PUNISH = T
 plotArrays(np.asarray(rewards) - np.asarray(costs), colors[1], "A2C")
 rewards, costs, costsPerTimestep, runName = getData(ENV = "CartPole", PUNISH = True, STEPS = 3, RL_ALG = "TRPO")
 plotArrays(np.asarray(rewards) - np.asarray(costs), colors[2], "TRPO")
+rewards, costs, costsPerTimestep, runName = getData(ORIGINAL = True, ENV = "CartPole", RL_ALG = "PPO")
+plotArrays(rewards, colors[3], "PPO(UnmodifiedEnv)")
+rewards, costs, costsPerTimestep, runName = getData(ENV = "CartPole", PUNISH = False, STEPS = 3, RL_ALG = "PPO")
+plotArrays(rewards, colors[4], "PPO(NoPunish)", minY = 0, numMeasurements = 5)#for comparison, what the rewards
 
 plt.legend(loc='best')
+plt.xlabel("Training Steps")
+plt.ylabel("Average Cost Corrected Reward Per Episode")
 plt.savefig(graphPath+"/costCorrectedReward.png")
 
 plt.figure()
@@ -179,13 +238,17 @@ rewards, costs, costsPerTimestep, runName = getData(ENV = "CartPole", PUNISH = T
 plotArrays(-np.asarray(costs), colors[1], "A2C", minY = 0)
 rewards, costs, costsPerTimestep, runName = getData(ENV = "CartPole", PUNISH = True, STEPS = 3, RL_ALG = "TRPO")
 plotArrays(-np.asarray(costs), colors[2], "TRPO", minY = 0)
+rewards, costs, costsPerTimestep, runName = getData(ENV = "CartPole", PUNISH = False, STEPS = 3, RL_ALG = "PPO")
+plotArrays(-np.asarray(costs), colors[4], "PPO(NoPunish)", minY = 0, numMeasurements = 5)#for comparison, what the costs would have been if it is not taught to take them into account
 
 plt.legend(loc='best')
+plt.xlabel("Training Steps")
+plt.ylabel("Average Cost of Replanning Per Episode")
 plt.savefig(graphPath+"/cost.png")
 
 #################
 
-graphPath = 'images/CartPole/punish/5steps'##These were run for 100000 steps 20000 length intervals
+graphPath = 'images/CartPole/punish/5steps'##These were run for 200000 steps 20000 length intervals
 if not os.path.exists(graphPath):
     os.makedirs(graphPath)
 
@@ -196,8 +259,14 @@ rewards, costs, costsPerTimestep, runName = getData(ENV = "CartPole", PUNISH = T
 plotArrays(rewards, colors[1], "A2C")
 rewards, costs, costsPerTimestep, runName = getData(ENV = "CartPole", PUNISH = True, STEPS = 5, RL_ALG = "TRPO")
 plotArrays(rewards, colors[2], "TRPO")
+rewards, costs, costsPerTimestep, runName = getData(ORIGINAL = True, ENV = "CartPole", RL_ALG = "PPO")
+plotArrays(rewards, colors[3], "PPO(UnmodifiedEnv)")
+rewards, costs, costsPerTimestep, runName = getData(ENV = "CartPole", PUNISH = False, STEPS = 5, RL_ALG = "PPO")
+plotArrays(rewards, colors[6], "PPO(NoPunish)", minY = 0, numMeasurements = 10)#for comparison, what the rewards
 
 plt.legend(loc='best')
+plt.xlabel("Training Steps")
+plt.ylabel("Average Reward Per Episode")
 plt.savefig(graphPath+"/costWeighedReward.png")
 
 plt.figure()
@@ -207,8 +276,14 @@ rewards, costs, costsPerTimestep, runName = getData(ENV = "CartPole", PUNISH = T
 plotArrays(np.asarray(rewards) - np.asarray(costs), colors[1], "A2C")
 rewards, costs, costsPerTimestep, runName = getData(ENV = "CartPole", PUNISH = True, STEPS = 5, RL_ALG = "TRPO")
 plotArrays(np.asarray(rewards) - np.asarray(costs), colors[2], "TRPO")
+rewards, costs, costsPerTimestep, runName = getData(ORIGINAL = True, ENV = "CartPole", RL_ALG = "PPO")
+plotArrays(rewards, colors[3], "PPO(UnmodifiedEnv)")
+rewards, costs, costsPerTimestep, runName = getData(ENV = "CartPole", PUNISH = False, STEPS = 5, RL_ALG = "PPO")
+plotArrays(rewards, colors[6], "PPO(NoPunish)", minY = 0, numMeasurements = 10)#for comparison, what the rewards
 
 plt.legend(loc='best')
+plt.xlabel("Training Steps")
+plt.ylabel("Average Cost Corrected Reward Per Episode")
 plt.savefig(graphPath+"/costCorrectedReward.png")
 
 plt.figure()
@@ -218,12 +293,16 @@ rewards, costs, costsPerTimestep, runName = getData(ENV = "CartPole", PUNISH = T
 plotArrays(-np.asarray(costs), colors[1], "A2C", minY = 0)
 rewards, costs, costsPerTimestep, runName = getData(ENV = "CartPole", PUNISH = True, STEPS = 5, RL_ALG = "TRPO")
 plotArrays(-np.asarray(costs), colors[2], "TRPO", minY = 0)
+rewards, costs, costsPerTimestep, runName = getData(ENV = "CartPole", PUNISH = False, STEPS = 5, RL_ALG = "PPO")
+plotArrays(-np.asarray(costs), colors[6], "PPO(NoPunish)", minY = 0, numMeasurements = 10)#for comparison, what the costs would have been if it is not taught to take them into account
 
 plt.legend(loc='best')
+plt.xlabel("Training Steps")
+plt.ylabel("Average Cost of Replanning Per Episode")
 plt.savefig(graphPath+"/cost.png")
 
 ################# This is the special graph to test if this architecture provides benifits
-graphPath = 'images/LunarLander/comparison'##These were run for 100000 steps 20000 length intervals
+graphPath = 'images/LunarLander/comparison'
 if not os.path.exists(graphPath):
     os.makedirs(graphPath)
 
@@ -248,6 +327,8 @@ rewards, costs, costsPerTimestep, runName = getData(ORIGINAL = True, ENV = "Luna
 plotArrays(rewards, colors[3], "PPO_Original")
 
 plt.legend(loc='best')
+plt.xlabel("Training Steps")
+plt.ylabel("Average Reward Per Episode")
 plt.savefig(graphPath+"/costWeighedReward.png")
 
 #--
@@ -274,23 +355,12 @@ rewards, costs, costsPerTimestep, runName = getData(ORIGINAL = True, ENV = "Luna
 plotArrays(np.asarray(rewards), colors[3], "PPO_Original")
 
 plt.legend(loc='best')
+plt.xlabel("Training Steps")
+plt.ylabel("Average Cost Corrected Reward Per Episode")
 plt.savefig(graphPath+"/costCorrectedReward.png")
 plt.close()
 
 ############
-graphPath = 'images/CarRacing/comparison'
-if not os.path.exists(graphPath):
-    os.makedirs(graphPath)
-
-plt.figure()
-rewards, costs, costsPerTimestep, runName = getData(ENV = "CarRacing", PUNISH = False, STEPS = 1, RL_ALG = "PPO")
-plotArrays(rewards, colors[3], "PPO_1Steps_NotPunished", interval = 60000)
-
-plt.legend(loc='best')
-plt.savefig(graphPath+"/costWeighedReward.png")
-plt.close()
-
-#################
 
 graphPath = 'images/Hopper/punish/3steps'##These were run for 1200000 steps 60000 length intervals
 if not os.path.exists(graphPath):
@@ -304,9 +374,13 @@ plotArrays(rewards, colors[1], "A2C", interval = 60000)
 rewards, costs, costsPerTimestep, runName = getData(ENV = "Hopper", PUNISH = True, STEPS = 3, RL_ALG = "TRPO")
 plotArrays(rewards, colors[2], "TRPO", interval = 60000)
 rewards, costs, costsPerTimestep, runName = getData(ORIGINAL = True, ENV = "Hopper", RL_ALG = "PPO")
-plotArrays(rewards, colors[3], "Baseline(PPO)", interval = 60000)
+plotArrays(rewards, colors[3], "PPO(UnmodifiedEnv)", interval = 60000)
+rewards, costs, costsPerTimestep, runName = getData(ENV = "Hopper", PUNISH = False, STEPS = 3, RL_ALG = "PPO")
+plotArrays(rewards, colors[4], "PPO(NoPunish)", interval = 60000)#for comparison, what the rewards
 
 plt.legend(loc='best')
+plt.xlabel("Training Steps")
+plt.ylabel("Average Reward Per Episode")
 plt.savefig(graphPath+"/costWeighedReward.png")
 plt.close()
 
@@ -318,9 +392,13 @@ plotArrays(np.asarray(rewards) - np.asarray(costs), colors[1], "A2C", interval =
 rewards, costs, costsPerTimestep, runName = getData(ENV = "Hopper", PUNISH = True, STEPS = 3, RL_ALG = "TRPO")
 plotArrays(np.asarray(rewards) - np.asarray(costs), colors[2], "TRPO", interval = 60000)
 rewards, costs, costsPerTimestep, runName = getData(ORIGINAL = True, ENV = "Hopper", RL_ALG = "PPO")
-plotArrays(np.asarray(rewards) - np.asarray(costs), colors[3], "Baseline(PPO)", interval = 60000)
+plotArrays(np.asarray(rewards) - np.asarray(costs), colors[3], "PPO(UnmodifiedEnv)", interval = 60000)
+rewards, costs, costsPerTimestep, runName = getData(ENV = "Hopper", PUNISH = False, STEPS = 3, RL_ALG = "PPO")
+plotArrays(rewards, colors[4], "PPO(NoPunish)", interval = 60000)#for comparison, what the rewards
 
 plt.legend(loc='best')
+plt.xlabel("Training Steps")
+plt.ylabel("Average Cost Corrected Reward Per Episode")
 plt.savefig(graphPath+"/costCorrectedReward.png")
 plt.close()
 
@@ -331,9 +409,13 @@ rewards, costs, costsPerTimestep, runName = getData(ENV = "Hopper", PUNISH = Tru
 plotArrays(-np.asarray(costs), colors[1], "A2C", minY = 0, interval = 60000)
 rewards, costs, costsPerTimestep, runName = getData(ENV = "Hopper", PUNISH = True, STEPS = 3, RL_ALG = "TRPO")
 plotArrays(-np.asarray(costs), colors[2], "TRPO", minY = 0, interval = 60000)
+rewards, costs, costsPerTimestep, runName = getData(ENV = "Hopper", PUNISH = False, STEPS = 3, RL_ALG = "PPO")
+plotArrays(-np.asarray(costs), colors[4], "PPO(NoPunish)", minY = 0, interval = 60000)#for comparison, what the costs would have been if it is not taught to take them into account
 
 
 plt.legend(loc='best')
+plt.xlabel("Training Steps")
+plt.ylabel("Average Cost of Replanning Per Episode")
 plt.savefig(graphPath+"/cost.png")
 plt.close()
 
@@ -345,9 +427,11 @@ plotArrays(-np.asarray(costsPerTimestep), colors[1], "A2C", minY = 0, interval =
 rewards, costs, costsPerTimestep, runName = getData(ENV = "Hopper", PUNISH = True, STEPS = 3, RL_ALG = "TRPO")
 plotArrays(-np.asarray(costsPerTimestep), colors[2], "TRPO", minY = 0, interval = 60000)
 rewards, costs, costsPerTimestep, runName = getData(ENV = "Hopper", PUNISH = False, STEPS = 3, RL_ALG = "PPO")
-plotArrays(-np.asarray(costsPerTimestep), colors[3], "PPO(NoPunish)", interval = 60000)#for comparison, what the costs would have been if it is not taught to take them into account
+plotArrays(-np.asarray(costsPerTimestep), colors[4], "PPO(NoPunish)", interval = 60000)#for comparison, what the costs would have been if it is not taught to take them into account
 
 plt.legend(loc='best')
+plt.xlabel("Training Steps")
+plt.ylabel("Average Cost of Replanning Per Timestep")
 plt.savefig(graphPath+"/costPerTimestep.png")
 plt.close()
 
@@ -365,9 +449,11 @@ plotArrays(rewards, colors[1], "A2C", interval = 60000)
 rewards, costs, costsPerTimestep, runName = getData(ENV = "Hopper", PUNISH = False, STEPS = 3, RL_ALG = "TRPO")
 plotArrays(rewards, colors[2], "TRPO", interval = 60000)
 rewards, costs, costsPerTimestep, runName = getData(ORIGINAL = True, ENV = "Hopper", RL_ALG = "PPO")
-plotArrays(rewards, colors[3], "Baseline(PPO)", interval = 60000)
+plotArrays(rewards, colors[3], "PPO(UnmodifiedEnv)", interval = 60000)
 
 plt.legend(loc='best')
+plt.xlabel("Training Steps")
+plt.ylabel("Average Reward Per Episode")
 plt.savefig(graphPath+"/costWeighedReward.png")
 plt.close()
 
@@ -381,6 +467,8 @@ plotArrays(-np.asarray(costs), colors[2], "TRPO", minY = 0, interval = 60000)
 
 
 plt.legend(loc='best')
+plt.xlabel("Training Steps")
+plt.ylabel("Average Cost of Replanning Per Episode")
 plt.savefig(graphPath+"/cost.png")
 plt.close()
 
@@ -398,9 +486,13 @@ plotArrays(rewards, colors[1], "A2C", minY = 0, maxY = 10000, interval = 60000)
 rewards, costs, costsPerTimestep, runName = getData(ENV = "InvertedDoublePendulum", PUNISH = True, STEPS = 3, RL_ALG = "TRPO")
 plotArrays(rewards, colors[2], "TRPO", minY = 0, maxY = 10000, interval = 60000)
 rewards, costs, costsPerTimestep, runName = getData(ORIGINAL = True, ENV = "InvertedDoublePendulum", RL_ALG = "PPO")
-plotArrays(rewards, colors[3], "Baseline(PPO)", minY = 0, maxY = 10000, interval = 60000)
+plotArrays(rewards, colors[3], "PPO(UnmodifiedEnv)", minY = 0, maxY = 10000, interval = 60000)
+rewards, costs, costsPerTimestep, runName = getData(ENV = "InvertedDoublePendulum", PUNISH = False, STEPS = 3, RL_ALG = "PPO")
+plotArrays(rewards, colors[4], "PPO(NoPunish)", minY = 0, maxY = 10000, interval = 60000)#for comparison, what the rewards
 
 plt.legend(loc='best')
+plt.xlabel("Training Steps")
+plt.ylabel("Average Reward Per Episode")
 plt.savefig(graphPath+"/costWeighedReward.png")
 plt.close()
 
@@ -412,9 +504,13 @@ plotArrays(np.asarray(rewards) - np.asarray(costs), colors[1], "A2C", minY = 0, 
 rewards, costs, costsPerTimestep, runName = getData(ENV = "InvertedDoublePendulum", PUNISH = True, STEPS = 3, RL_ALG = "TRPO")
 plotArrays(np.asarray(rewards) - np.asarray(costs), colors[2], "TRPO", minY = 0, maxY = 10000, interval = 60000)
 rewards, costs, costsPerTimestep, runName = getData(ORIGINAL = True, ENV = "InvertedDoublePendulum", RL_ALG = "PPO")
-plotArrays(np.asarray(rewards) - np.asarray(costs), colors[3], "Baseline(PPO)", minY = 0, maxY = 10000, interval = 60000)
+plotArrays(np.asarray(rewards), colors[3], "PPO(UnmodifiedEnv)", minY = 0, maxY = 10000, interval = 60000)
+rewards, costs, costsPerTimestep, runName = getData(ENV = "InvertedDoublePendulum", PUNISH = False, STEPS = 3, RL_ALG = "PPO")
+plotArrays(rewards, colors[4], "PPO(NoPunish)", minY = 0, maxY = 10000, interval = 60000)#for comparison, what the rewards
 
 plt.legend(loc='best')
+plt.xlabel("Training Steps")
+plt.ylabel("Average Cost Corrected Reward Per Episode")
 plt.savefig(graphPath+"/costCorrectedReward.png")
 plt.close()
 
@@ -425,9 +521,13 @@ rewards, costs, costsPerTimestep, runName = getData(ENV = "InvertedDoublePendulu
 plotArrays(-np.asarray(costs), colors[1], "A2C", minY = 0, interval = 60000)
 rewards, costs, costsPerTimestep, runName = getData(ENV = "InvertedDoublePendulum", PUNISH = True, STEPS = 3, RL_ALG = "TRPO")
 plotArrays(-np.asarray(costs), colors[2], "TRPO", minY = 0, interval = 60000)
+rewards, costs, costsPerTimestep, runName = getData(ENV = "InvertedDoublePendulum", PUNISH = False, STEPS = 3, RL_ALG = "PPO")
+plotArrays(-np.asarray(costs), colors[4], "PPO(NoPunish)", minY = 0, interval = 60000)#for comparison, what the costs would have been if it is not taught to take them into account
 
 
 plt.legend(loc='best')
+plt.xlabel("Training Steps")
+plt.ylabel("Average Cost of Replanning Per Episode")
 plt.savefig(graphPath+"/cost.png")
 plt.close()
 
@@ -439,9 +539,11 @@ plotArrays(-np.asarray(costsPerTimestep), colors[1], "A2C", minY = 0, interval =
 rewards, costs, costsPerTimestep, runName = getData(ENV = "InvertedDoublePendulum", PUNISH = True, STEPS = 3, RL_ALG = "TRPO")
 plotArrays(-np.asarray(costsPerTimestep), colors[2], "TRPO", minY = 0, interval = 60000)
 rewards, costs, costsPerTimestep, runName = getData(ENV = "InvertedDoublePendulum", PUNISH = False, STEPS = 3, RL_ALG = "PPO")
-plotArrays(-np.asarray(costsPerTimestep), colors[3], "PPO(NoPunish)", interval = 60000)#for comparison, what the costs would have been if it is not taught to take them into account
+plotArrays(-np.asarray(costsPerTimestep), colors[4], "PPO(NoPunish)", interval = 60000)#for comparison, what the costs would have been if it is not taught to take them into account
 
 plt.legend(loc='best')
+plt.xlabel("Training Steps")
+plt.ylabel("Average Cost of Replanning Per Timestep")
 plt.savefig(graphPath+"/costPerTimestep.png")
 plt.close()
 
@@ -452,10 +554,160 @@ if not os.path.exists(graphPath):
 
 plt.figure()
 rewards, costs, costsPerTimestep, runName = getData(ORIGINAL = True, ENV = "InvertedDoublePendulum", RL_ALG = "PPO")
-plotArrays(np.asarray(rewards), colors[3], "Baseline(PPO)", minY = 0, maxY = 10000, interval = 60000)
+plotArrays(np.asarray(rewards), colors[3], "PPO(UnmodifiedEnv)", minY = 0, maxY = 10000, interval = 60000)
 rewards, costs, costsPerTimestep, runName = getData(ENV = "InvertedDoublePendulum", PUNISH = False, STEPS = 3, RL_ALG = "PPO")
 plotArrays(rewards, colors[4], "PPO_3Steps_NotPunished", interval = 60000)
 
 plt.legend(loc='best')
+plt.xlabel("Training Steps")
+plt.ylabel("Average Reward Per Episode")
 plt.savefig(graphPath+"/costWeighedReward.png")
+plt.close()
+
+############
+
+graphPath = 'images/Reacher/punish/3steps'##These were run for 1200000 steps 60000 length intervals
+if not os.path.exists(graphPath):
+    os.makedirs(graphPath)
+
+plt.figure()
+rewards, costs, costsPerTimestep, runName = getData(ENV = "Reacher", PUNISH = True, STEPS = 3, RL_ALG = "PPO")
+plotArrays(rewards, colors[0], "PPO", maxY = 0, interval = 60000)
+rewards, costs, costsPerTimestep, runName = getData(ENV = "Reacher", PUNISH = True, STEPS = 3, RL_ALG = "A2C")
+plotArrays(rewards, colors[1], "A2C", maxY = 0, interval = 60000)
+rewards, costs, costsPerTimestep, runName = getData(ENV = "Reacher", PUNISH = True, STEPS = 3, RL_ALG = "TRPO")
+plotArrays(rewards, colors[2], "TRPO", maxY = 0, interval = 60000)
+rewards, costs, costsPerTimestep, runName = getData(ORIGINAL = True, ENV = "Reacher", RL_ALG = "PPO")
+plotArrays(rewards, colors[3], "PPO(UnmodifiedEnv)", maxY = 0, interval = 60000)
+rewards, costs, costsPerTimestep, runName = getData(ENV = "Reacher", PUNISH = False, STEPS = 3, RL_ALG = "PPO")
+plotArrays(rewards, colors[4], "PPO(NoPunish)", minY = 0, interval = 60000)#for comparison, what the rewards
+
+plt.legend(loc='best')
+plt.xlabel("Training Steps")
+plt.ylabel("Average Reward Per Episode")
+plt.savefig(graphPath+"/costWeighedReward.png")
+plt.close()
+
+plt.figure()
+rewards, costs, costsPerTimestep, runName = getData(ENV = "Reacher", PUNISH = True, STEPS = 3, RL_ALG = "PPO")
+plotArrays(np.asarray(rewards) - np.asarray(costs), colors[0], "PPO", maxY = 0, interval = 60000)
+rewards, costs, costsPerTimestep, runName = getData(ENV = "Reacher", PUNISH = True, STEPS = 3, RL_ALG = "A2C")
+plotArrays(np.asarray(rewards) - np.asarray(costs), colors[1], "A2C", maxY = 0, interval = 60000)
+rewards, costs, costsPerTimestep, runName = getData(ENV = "Reacher", PUNISH = True, STEPS = 3, RL_ALG = "TRPO")
+plotArrays(np.asarray(rewards) - np.asarray(costs), colors[2], "TRPO", maxY = 0, interval = 60000)
+rewards, costs, costsPerTimestep, runName = getData(ORIGINAL = True, ENV = "Reacher", RL_ALG = "PPO")
+plotArrays(np.asarray(rewards) - np.asarray(costs), colors[3], "PPO(UnmodifiedEnv)", maxY = 0, interval = 60000)
+rewards, costs, costsPerTimestep, runName = getData(ENV = "Reacher", PUNISH = False, STEPS = 3, RL_ALG = "PPO")
+plotArrays(rewards, colors[4], "PPO(NoPunish)", minY = 0, interval = 60000)#for comparison, what the rewards
+
+plt.legend(loc='best')
+plt.xlabel("Training Steps")
+plt.ylabel("Average Cost Corrected Reward Per Episode")
+plt.savefig(graphPath+"/costCorrectedReward.png")
+plt.close()
+
+plt.figure()
+rewards, costs, costsPerTimestep, runName = getData(ENV = "Reacher", PUNISH = True, STEPS = 3, RL_ALG = "PPO")
+plotArrays(-np.asarray(costs), colors[0], "PPO", minY = 0, interval = 60000)
+rewards, costs, costsPerTimestep, runName = getData(ENV = "Reacher", PUNISH = True, STEPS = 3, RL_ALG = "A2C")
+plotArrays(-np.asarray(costs), colors[1], "A2C", minY = 0, interval = 60000)
+rewards, costs, costsPerTimestep, runName = getData(ENV = "Reacher", PUNISH = True, STEPS = 3, RL_ALG = "TRPO")
+plotArrays(-np.asarray(costs), colors[2], "TRPO", minY = 0, interval = 60000)
+rewards, costs, costsPerTimestep, runName = getData(ENV = "Reacher", PUNISH = False, STEPS = 3, RL_ALG = "PPO")
+plotArrays(-np.asarray(costs), colors[4], "PPO(NoPunish)", interval = 60000)#for comparison, what the costs would have been if it is not taught to take them into account
+
+plt.legend(loc='best')
+plt.xlabel("Training Steps")
+plt.ylabel("Average Cost of Replanning Per Episode")
+plt.savefig(graphPath+"/cost.png")
+plt.close()
+
+plt.figure()
+rewards, costs, costsPerTimestep, runName = getData(ENV = "Reacher", PUNISH = True, STEPS = 3, RL_ALG = "PPO")
+plotArrays(-np.asarray(costsPerTimestep), colors[0], "PPO", minY = 0, interval = 60000)
+rewards, costs, costsPerTimestep, runName = getData(ENV = "Reacher", PUNISH = True, STEPS = 3, RL_ALG = "A2C")
+plotArrays(-np.asarray(costsPerTimestep), colors[1], "A2C", minY = 0, interval = 60000)
+rewards, costs, costsPerTimestep, runName = getData(ENV = "Reacher", PUNISH = True, STEPS = 3, RL_ALG = "TRPO")
+plotArrays(-np.asarray(costsPerTimestep), colors[2], "TRPO", minY = 0, interval = 60000)
+rewards, costs, costsPerTimestep, runName = getData(ENV = "Reacher", PUNISH = False, STEPS = 3, RL_ALG = "PPO")
+plotArrays(-np.asarray(costsPerTimestep), colors[4], "PPO(NoPunish)", interval = 60000)#for comparison, what the costs would have been if it is not taught to take them into account
+
+plt.legend(loc='best')
+plt.xlabel("Training Steps")
+plt.ylabel("Average Cost of Replanning Per Timestep")
+plt.savefig(graphPath+"/costPerTimestep.png")
+plt.close()
+
+############
+
+graphPath = 'images/HalfCheetah/punish/3steps'##These were run for 1200000 steps 60000 length intervals
+if not os.path.exists(graphPath):
+    os.makedirs(graphPath)
+
+plt.figure()
+rewards, costs, costsPerTimestep, runName = getData(ENV = "HalfCheetah", PUNISH = True, STEPS = 3, RL_ALG = "PPO")
+plotArrays(rewards, colors[0], "PPO", interval = 60000)
+rewards, costs, costsPerTimestep, runName = getData(ENV = "HalfCheetah", PUNISH = True, STEPS = 3, RL_ALG = "A2C")
+plotArrays(rewards, colors[1], "A2C", interval = 60000)
+rewards, costs, costsPerTimestep, runName = getData(ENV = "HalfCheetah", PUNISH = True, STEPS = 3, RL_ALG = "TRPO")
+plotArrays(rewards, colors[2], "TRPO", interval = 60000)
+rewards, costs, costsPerTimestep, runName = getData(ORIGINAL = True, ENV = "HalfCheetah", RL_ALG = "PPO")
+plotArrays(rewards, colors[3], "PPO(UnmodifiedEnv)", interval = 60000)
+rewards, costs, costsPerTimestep, runName = getData(ENV = "HalfCheetah", PUNISH = False, STEPS = 3, RL_ALG = "PPO")
+plotArrays(rewards, colors[4], "PPO(NoPunish)", interval = 60000)#for comparison, what the rewards
+
+plt.legend(loc='best')
+plt.xlabel("Training Steps")
+plt.ylabel("Average Reward Per Episode")
+plt.savefig(graphPath+"/costWeighedReward.png")
+plt.close()
+
+plt.figure()
+rewards, costs, costsPerTimestep, runName = getData(ENV = "HalfCheetah", PUNISH = True, STEPS = 3, RL_ALG = "PPO")
+plotArrays(np.asarray(rewards) - np.asarray(costs), colors[0], "PPO", interval = 60000)
+rewards, costs, costsPerTimestep, runName = getData(ENV = "HalfCheetah", PUNISH = True, STEPS = 3, RL_ALG = "A2C")
+plotArrays(np.asarray(rewards) - np.asarray(costs), colors[1], "A2C", interval = 60000)
+rewards, costs, costsPerTimestep, runName = getData(ENV = "HalfCheetah", PUNISH = True, STEPS = 3, RL_ALG = "TRPO")
+plotArrays(np.asarray(rewards) - np.asarray(costs), colors[2], "TRPO", interval = 60000)
+rewards, costs, costsPerTimestep, runName = getData(ORIGINAL = True, ENV = "HalfCheetah", RL_ALG = "PPO")
+plotArrays(np.asarray(rewards), colors[3], "PPO(UnmodifiedEnv)", interval = 60000)
+rewards, costs, costsPerTimestep, runName = getData(ENV = "HalfCheetah", PUNISH = False, STEPS = 3, RL_ALG = "PPO")
+plotArrays(rewards, colors[4], "PPO(NoPunish)", interval = 60000)#for comparison, what the rewards
+
+plt.legend(loc='best')
+plt.xlabel("Training Steps")
+plt.ylabel("Average Cost Corrected Reward Per Episode")
+plt.savefig(graphPath+"/costCorrectedReward.png")
+plt.close()
+
+plt.figure()
+rewards, costs, costsPerTimestep, runName = getData(ENV = "HalfCheetah", PUNISH = True, STEPS = 3, RL_ALG = "PPO")
+plotArrays(-np.asarray(costs), colors[0], "PPO", minY = 0, interval = 60000)
+rewards, costs, costsPerTimestep, runName = getData(ENV = "HalfCheetah", PUNISH = True, STEPS = 3, RL_ALG = "A2C")
+plotArrays(-np.asarray(costs), colors[1], "A2C", minY = 0, interval = 60000)
+rewards, costs, costsPerTimestep, runName = getData(ENV = "HalfCheetah", PUNISH = True, STEPS = 3, RL_ALG = "TRPO")
+plotArrays(-np.asarray(costs), colors[2], "TRPO", minY = 0, interval = 60000)
+rewards, costs, costsPerTimestep, runName = getData(ENV = "HalfCheetah", PUNISH = False, STEPS = 3, RL_ALG = "PPO")
+plotArrays(-np.asarray(costs), colors[4], "PPO(NoPunish)", interval = 60000)#for comparison, what the costs would have been if it is not taught to take them into account
+
+plt.legend(loc='best')
+plt.xlabel("Training Steps")
+plt.ylabel("Average Cost of Replanning Per Episode")
+plt.savefig(graphPath+"/cost.png")
+plt.close()
+
+plt.figure()
+rewards, costs, costsPerTimestep, runName = getData(ENV = "HalfCheetah", PUNISH = True, STEPS = 3, RL_ALG = "PPO")
+plotArrays(-np.asarray(costsPerTimestep), colors[0], "PPO", minY = 0, interval = 60000)
+rewards, costs, costsPerTimestep, runName = getData(ENV = "HalfCheetah", PUNISH = True, STEPS = 3, RL_ALG = "A2C")
+plotArrays(-np.asarray(costsPerTimestep), colors[1], "A2C", minY = 0, interval = 60000)
+rewards, costs, costsPerTimestep, runName = getData(ENV = "HalfCheetah", PUNISH = True, STEPS = 3, RL_ALG = "TRPO")
+plotArrays(-np.asarray(costsPerTimestep), colors[2], "TRPO", minY = 0, interval = 60000)
+rewards, costs, costsPerTimestep, runName = getData(ENV = "HalfCheetah", PUNISH = False, STEPS = 3, RL_ALG = "PPO")
+plotArrays(-np.asarray(costsPerTimestep), colors[4], "PPO(NoPunish)", interval = 60000)#for comparison, what the costs would have been if it is not taught to take them into account
+
+plt.legend(loc='best')
+plt.xlabel("Training Steps")
+plt.ylabel("Average Cost of Replanning Per Timestep")
+plt.savefig(graphPath+"/costPerTimestep.png")
 plt.close()
