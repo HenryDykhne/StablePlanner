@@ -1,1 +1,2 @@
 # OfflineForwardPlanner
+Refer to [Reinforcement_Learning_for_Stable_Planning.pdf](Reinforcement_Learning_for_Stable_Planning.pdf)
